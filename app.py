@@ -67,5 +67,5 @@ async def on_message(message):
 #Execute Server
 
 print("Debug" + " " + str(ChooseRace))
-client.run('NzA5ODcwMzkwMjA1MzQ5OTUx.XrsNBQ.xZpu2bBRznl_XlDFQ5vNX4jl74Y')
+client.run('Token here')
 
