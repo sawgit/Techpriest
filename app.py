@@ -5,21 +5,18 @@ client = discord.Client()
 
 #Data
 
-test = 0
+debug = 0
+pathRaceList = 'data/races.txt'
+pathVocab = 'data/vocab.txt'
+pathSecretBotKey = 'secrets/appKey.txt'
 
-races = {
-    '0':'Space Marines',
-    '1':'Chaos',
-    '2':'Eldar',
-    '3':'Dark Eldar',
-    '4':'Tau',
-    '5':'Orks',
-    }
+races = open(pathRaceList).readlines()
+secretBotKey = open(pathSecretBotKey).read()
 
 #Functions
 
 def ChooseRace(races):
-    chosenRace = random.choice(list(races.values()))
+    chosenRace = random.choice(races)
     return chosenRace
 
 def BuildRaceList(players = 2):
@@ -35,7 +32,7 @@ def BuildRaceList(players = 2):
 def SelectFromTxtFile():
 #Function will return a random word from word_list.txt
 
-    wordList = open("data/vocab.txt").readlines()
+    wordList = open(pathVocab).readlines()
 
     chosenWord = random.choice(wordList)
     return chosenWord
@@ -44,28 +41,28 @@ def SelectFromTxtFile():
 
 @client.event
 async def on_ready():
-    print('Reporting for duty sir!... {0.user}'.format(client))
+    print('\n  ==== Techpriest Discord Bot v0.1 ==== \n\n Thankyou machine spirit for our safe arrival. \n {0.user}'.format(client))
+    # await client.send_message('I am honoured that you require my skills... \n type "tp help" for commands.')
 
 @client.event
 async def on_message(message):
     if message.author == client.user: 
         return
 
-    if message.content.startswith('tp match'):
-        print('Im on it {0.user}'.format(client))
+    elif message.content.startswith('tp match'):
         await message.channel.send('I have completed the task... \n  '+ str(BuildRaceList()))
 
-    if message.content.startswith('tp qoute'):
+    elif message.content.startswith('tp quote'):
         await message.channel.send(SelectFromTxtFile())
 
-    if message.content.startswith('tp help'):
-        await message.channel.send('Help File Here.')
+    elif message.content.startswith('tp help'):
+        await message.channel.send(str(open("data/help.txt").read()))
 
-    else:
-        await message.channel.send('My will falters.')
+    elif message.content.startswith('tp ldr'):
+        await message.channel.send('***Coming soon to a chat near you***')
 
 #Execute Server
 
 print("Debug" + " " + str(ChooseRace))
-client.run('Token here')
+client.run(secretBotKey)
 

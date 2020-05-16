@@ -1,0 +1,4 @@
+** Commands **
+```tp match - Creates a randomly generated SS matchup.
+tp quote - Returns a random techpriest qoute.
+tp ldr - Leaderboard, Coming soon to a chat near you.```
