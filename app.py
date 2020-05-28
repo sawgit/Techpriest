@@ -15,48 +15,38 @@ secretBotKey = open(pathSecretBotKey).read()
 
 #Functions
 
-def ChooseRace(races):
-    chosenRace = random.choice(races)
-    return chosenRace
+def BuildRaceArray(playerNum):
 
-def BuildRaceList(players = 2, teams = 2):
+    def ChooseRace(races):
+        chosenRace = random.choice(races)
+        return chosenRace
+
+    playerArray = []
+    i = 0
+
+    while i < playerNum:
+        
+        playerArray.append(ChooseRace(races))
+        i += 1
+
+    return playerArray
+
+def BuildRaceList(raceArray, teamSize):
 #Function will distribute a number of players to a set number of teams.
 
-    def calcTeamsize(players, teams):
-    #Function will recieve a number of players and divide that by the number of teams.
-    #Will produce an error if number is not divisable.
-        modulo = teams / players
+    print("debugBRL01: " + str(raceArray))
 
-        if isinstance(modulo, float) == True:
-            modulo = 0
+    def chunks(l, n):
+        #"""Yield successive n-sized chunks from l."""
+        for i in range(0, len(l), n):
+            yield l[i:i + n]
 
-        return modulo
+    #random.shuffle(n)
 
-    playerCount = 0
-    teamSize = calcTeamsize(players, teams)
-    teamList0 = []
-    teamList1 = []
-    teamList2 = []
+    formattedOutput = list(chunks(raceArray, teamSize))
+    # [['B', 'H', 'G'], ['D', 'A', 'C'], ['E', 'F', 'I'], ['J', 'K']]
 
-    while playerCount < players:
-        print("Debug: " + str(playerCount) + str(players) + str(teamSize))
-
-        while playerCount < teamSize:
-            print("DebugX02: " + str(playerCount) + str(players))
-            teamList0.append(ChooseRace(races))
-            playerCount += 1
-
-        while playerCount < teamSize:
-            print("DebugX03: " + str(playerCount) + str(players))
-            teamList1.append(ChooseRace(races))
-            playerCount += 1
-
-        while playerCount < teamSize:
-            teamList2.append(ChooseRace(races))
-            playerCount += 1
-
-    #This section will receive the individual racelists, collate then format them for output.
-    formattedOutput = 'Team 1: ' + str(teamList0) + 'Team 2: ' + str(teamList1) + 'Team 3: ' + str(teamList2)
+    print("debugBRL02: " + str(formattedOutput))
 
     return formattedOutput
 
@@ -68,20 +58,33 @@ def SelectFromTxtFile():
     chosenWord = random.choice(wordList)
     return chosenWord
 
-#Run Logic
+def OutputRaceList(list):
+
+    outputString = ""
+    teamCount = 1
+
+    for i in range(len(list)):
+        for x in list[i]:
+            outputString = outputString + "```" + "Team " + str(teamCount) + ": " + str(x) + "```"
+        teamCount += 1
+        #outputString = outputString + "```vs```"
+
+    return outputString
+
+#Run Listeners and chat logic.
 
 @client.event
 async def on_ready():
     print('\n  ==== Techpriest Discord Bot v0.1 ==== \n\n Thankyou machine spirit for our safe arrival. \n {0.user}'.format(client))
     # await client.send_message('I am honoured that you require my skills... \n type "tp help" for commands.')
 
-@client.event
+@client.event #Creates listener.
 async def on_message(message):
     if message.author == client.user: 
         return
 
     elif message.content.startswith('tp match'):
-        await message.channel.send('I have completed the task... \n  '+ BuildRaceList())
+        await message.channel.send('I have completed the task... \n  ' + OutputRaceList(BuildRaceList(BuildRaceArray(6), 3)))
 
     elif message.content.startswith('tp quote'):
         await message.channel.send(SelectFromTxtFile())
@@ -94,6 +97,7 @@ async def on_message(message):
 
 #Execute Server
 
-print("Debug" + " " + str(ChooseRace))
 client.run(secretBotKey)
+
+#
 
