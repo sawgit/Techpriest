@@ -1,4 +1,4 @@
 ** Commands **
 ```tp match - Creates a randomly generated SS matchup.```
+```tp ldr - Leaderboard, Alpha simple manually updated Leaderboard```
 ```tp quote - Returns a random techpriest quote.```
-```tp ldr - Leaderboard, Coming soon to a chat near you.```

@@ -75,7 +75,7 @@ def OutputRaceList(list):
 
 @client.event
 async def on_ready():
-    print('\n  ==== Techpriest Discord Bot v0.1 ==== \n\n Thankyou machine spirit for our safe arrival. \n {0.user}'.format(client))
+    print('\n  ==== Techpriest Discord Bot v0.2 ==== \n\n Thankyou machine spirit for our safe arrival. \n {0.user}'.format(client))
     # await client.send_message('I am honoured that you require my skills... \n type "tp help" for commands.')
 
 @client.event #Creates listener.
@@ -84,8 +84,16 @@ async def on_message(message):
         return
 
     elif message.content.startswith('tp match'):
-        await message.channel.send('I have completed the task... \n  ' + OutputRaceList(BuildRaceList(BuildRaceArray(6), 3)))
 
+        if message.content == 'tp match': #Default behaviour
+            await message.channel.send('Default mode: I have completed the task... \n  ' + OutputRaceList(BuildRaceList(BuildRaceArray(6), 3)))
+
+        elif '/l ivx' in message.content: #Lore Based Mode
+            await message.channel.send('Lore Mode - Imperium VS Xenos \n  ' + OutputRaceList(BuildRaceList(BuildRaceArray(6), 3)))
+
+        if '/h' in message.content: #Skill aware mode
+            await message.channel.send('Skill aware mode \n  ' + OutputRaceList(BuildRaceList(BuildRaceArray(6), 3)))
+       
     elif message.content.startswith('tp quote'):
         await message.channel.send(SelectFromTxtFile())
 
@@ -93,11 +101,9 @@ async def on_message(message):
         await message.channel.send(str(open("data/help.txt").read()))
 
     elif message.content.startswith('tp ldr'):
-        await message.channel.send('***Coming soon to a chat near you***')
+        await message.channel.send(str(open("data/leaderboard.txt").read()))
 
 #Execute Server
 
 client.run(secretBotKey)
-
-#
 
